@@ -108,9 +108,9 @@ void LaserscanMerger::laserscan_topic_parser()
         exit(1);
     }
     
-    
-    
-    
+    sort(tmp_input_topics.begin(),tmp_input_topics.end());
+    std::vector<string>::iterator last = std::unique(tmp_input_topics.begin(), tmp_input_topics.end());
+    tmp_input_topics.erase(last, tmp_input_topics.end());
 
     // Unsubscribe from previous topics
     for(int i=0; i<scan_subscribers.size(); ++i)
@@ -127,7 +127,7 @@ void LaserscanMerger::laserscan_topic_parser()
         {
             scan_subscribers[i] = node_.subscribe<sensor_msgs::LaserScan> (input_topics[i].c_str(), 1, boost::bind(&LaserscanMerger::scanCallback,this, _1, input_topics[i]));
             clouds_modified[i] = false;
-            cout << input_topics[i] << " ";
+            ROS_INFO_STREAM(input_topics[i]);
         }
     }
     else {
