@@ -142,6 +142,9 @@ LaserscanMerger::LaserscanMerger()
 
 void LaserscanMerger::scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan, std::string topic)
 {
+    
+    ROS_DEBUG("scan callback");
+    
 	sensor_msgs::PointCloud tmpCloud1,tmpCloud2;
 	sensor_msgs::PointCloud2 tmpCloud3;
 
@@ -207,6 +210,11 @@ void LaserscanMerger::pointcloud_to_laserscan(Eigen::MatrixXf points, pcl::PCLPo
 
 	uint32_t ranges_size = std::ceil((output->angle_max - output->angle_min) / output->angle_increment);
 	output->ranges.assign(ranges_size, output->range_max + 1.0);
+    
+    if(points.cols() == 0) {
+        ROS_ERROR("points is emty");
+        ROS_DEBUG("test debug");
+    }
 
 	for(int i=0; i<points.cols(); i++)
 	{
