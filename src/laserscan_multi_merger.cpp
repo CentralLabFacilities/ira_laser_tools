@@ -155,7 +155,7 @@ LaserscanMerger::LaserscanMerger()
     point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> (cloud_destination_topic.c_str(), 1, false);
     laser_scan_publisher_ = node_.advertise<sensor_msgs::LaserScan> (scan_destination_topic.c_str(), 1, false);
 
-    tfListener_.setExtrapolationLimit(ros::Duration(0.1));
+    // tfListener_.setExtrapolationLimit(ros::Duration(0.1));
 
 }
 
@@ -166,7 +166,7 @@ void LaserscanMerger::scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan,
     sensor_msgs::PointCloud2 tmpCloud3;
 
     // Verify that TF knows how to transform from the received scan to the destination scan frame
-    tfListener_.waitForTransform(scan->header.frame_id.c_str(), destination_frame.c_str(), scan->header.stamp, ros::Duration(20.0));
+    tfListener_.waitForTransform(scan->header.frame_id.c_str(), destination_frame.c_str(), scan->header.stamp, ros::Duration(1));
 
     projector_.transformLaserScanToPointCloud(scan->header.frame_id, *scan, tmpCloud1, tfListener_);
     try
