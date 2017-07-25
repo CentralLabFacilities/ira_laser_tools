@@ -55,6 +55,8 @@ private:
     string cloud_destination_topic;
     string scan_destination_topic;
     string laserscan_topics;
+    // Move this up here
+    Eigen::MatrixXf points;
 };
 
 void LaserscanMerger::reconfigureCallback(laserscan_multi_mergerConfig &config, uint32_t level)
@@ -207,7 +209,8 @@ void LaserscanMerger::scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan,
 
         point_cloud_publisher_.publish(merged_cloud);
 
-        Eigen::MatrixXf points;
+        // Sefaults on 32 bit, moving up
+        // Eigen::MatrixXf points;
         getPointCloudAsEigen(merged_cloud,points);
 
         pointcloud_to_laserscan(points, &merged_cloud);
