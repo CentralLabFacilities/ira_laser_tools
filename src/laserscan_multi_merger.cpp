@@ -176,7 +176,7 @@ void LaserscanMerger::scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan,
     {
         tfListener_.transformPointCloud(destination_frame.c_str(), tmpCloud1, tmpCloud2);
     } catch (tf::TransformException ex) {
-        ROS_WARNING("%s",ex.what());
+        ROS_WARN("%s",ex.what());
         return;
     }
 
