@@ -33,7 +33,7 @@ private:
     laser_geometry::LaserProjection projector_;
     tf::TransformListener tfListener_;
 
-    ros::Publisher point_cloud_publisher_;
+    // ros::Publisher point_cloud_publisher_;
     ros::Publisher laser_scan_publisher_;
     vector<ros::Subscriber> scan_subscribers;
     vector<bool> clouds_modified;
@@ -73,6 +73,7 @@ void LaserscanMerger::reconfigureCallback(laserscan_multi_mergerConfig &config, 
 void LaserscanMerger::laserscan_topic_parser()
 {
 
+    ROS_INFO("NOTE >>> THIS VERSION DOES NOT PUBLISH CLOUDS. SAVING CPU TIME.");
     ROS_DEBUG("setting up topics for merge");
     
     // LaserScan topics to subscribe
@@ -154,7 +155,7 @@ LaserscanMerger::LaserscanMerger()
 
     this->laserscan_topic_parser();
 
-    point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> (cloud_destination_topic.c_str(), 1, false);
+    // point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2> (cloud_destination_topic.c_str(), 1, false);
     laser_scan_publisher_ = node_.advertise<sensor_msgs::LaserScan> (scan_destination_topic.c_str(), 1, false);
 
     // tfListener_.setExtrapolationLimit(ros::Duration(0.1));
@@ -207,7 +208,7 @@ void LaserscanMerger::scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan,
             clouds_modified[i] = false;
         }
 
-        point_cloud_publisher_.publish(merged_cloud);
+        // point_cloud_publisher_.publish(merged_cloud);
 
         // Sefaults on 32 bit, moving up
         // Eigen::MatrixXf points;
